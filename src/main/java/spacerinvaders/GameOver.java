@@ -14,7 +14,7 @@ public class GameOver extends JDialog {
         setLayout(null);
         addMouseListener(new MouseHandler());
 
-        lblGameOver =new JLabel(new ImageIcon("src/main/java/images/game-over.gif"));
+        lblGameOver =new JLabel(new ImageIcon(f.getClass().getResource("images/game-over.gif")));
         setContentPane(lblGameOver);
         
     }

@@ -2,6 +2,8 @@ package spacerinvaders;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
@@ -18,13 +20,15 @@ public class SClip {
     private AudioInputStream audioStream;
 
     // clip method
-    public SClip(String path) {
+    public SClip(URL url) {
         // create an AudioInputStream from a given sound file
-        File audioFile = new File(path);
         try {
+            File audioFile = new File(url.toURI());
             audioStream = AudioSystem.getAudioInputStream(audioFile);
         } catch (UnsupportedAudioFileException | IOException e) {
             e.printStackTrace();
+        }catch(URISyntaxException e){
+            
         }
 
         // acquire audio format and create a DataLine.Info object

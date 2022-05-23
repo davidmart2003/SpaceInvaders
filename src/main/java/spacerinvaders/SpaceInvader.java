@@ -8,9 +8,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
@@ -24,9 +25,9 @@ public class SpaceInvader extends JFrame {
     public SpaceInvader() {
         super("Space Invaders Menu");
         setLayout(null);
-        registerFont("src/main/java/Fonts/ARCO for OSX.otf");
+        registerFont(FrameMain.class.getResource("Fonts/ARCOOSX.otf"));
 
-        lblBackgroundImage = new JLabel(new ImageIcon("src/main/java/images/galaxy.png"));
+        lblBackgroundImage = new JLabel(new ImageIcon(FrameMain.class.getResource("images/galaxy.png")));
         lblBackgroundImage.setSize(lblBackgroundImage.getPreferredSize());
         lblBackgroundImage.setLocation(0, 0);
         setContentPane(lblBackgroundImage);
@@ -75,15 +76,19 @@ public class SpaceInvader extends JFrame {
         setVisible(true);
     }
 
-    public static void registerFont(String path) {
+    public static void registerFont(URL url) {
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         try {
-            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File(path)));
+            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File(url.toURI())));
+            
         } catch (FontFormatException e) {
 
             e.printStackTrace();
         } catch (IOException e) {
 
+            e.printStackTrace();
+        } catch (URISyntaxException e) {
+                
             e.printStackTrace();
         }
     }
@@ -96,7 +101,6 @@ public class SpaceInvader extends JFrame {
                 frame.setSize(600, 600);
                 frame.setLocationRelativeTo(null);
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                frame.setUndecorated(true);
                 frame.setVisible(true);
                 dispose();
             }

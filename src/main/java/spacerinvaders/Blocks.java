@@ -5,7 +5,7 @@ import javax.swing.JLabel;
 
 public class Blocks extends JLabel {
     public Blocks(int xBlock, int yBlock){
-        setIcon(new ImageIcon("src/main/java/images/bloque3.png"));
+        setIcon(new ImageIcon(FrameMain.class.getResource("images/bloque3.png")));
         setSize(this.getPreferredSize());
         setLocation(xBlock, yBlock);
         
@@ -20,7 +20,9 @@ public class Blocks extends JLabel {
 
     public void hit(){
         hP--;
-        setIcon(new ImageIcon("src/main/java/images/bloque"+hP+".png"));
+        if(hP>0){
+            setIcon(new ImageIcon(FrameMain.class.getResource("images/bloque"+hP+".png")));
+        }
     }
     
     private int hP=3;

@@ -1,0 +1,2 @@
+Cambiando todas las rutas de archibvos a getResources
+High Score y score arreglado

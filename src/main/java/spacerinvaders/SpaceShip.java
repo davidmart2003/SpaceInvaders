@@ -6,7 +6,7 @@ import javax.swing.JLabel;
 public class SpaceShip extends JLabel {
     public SpaceShip(){
         super();
-        setIcon(new ImageIcon("src/main/java/images/nave.png"));
+        setIcon(new ImageIcon(FrameMain.class.getResource("images/nave.png")));
         setSize(this.getPreferredSize());
         setLocation(250, 450);
     }

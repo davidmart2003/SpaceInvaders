@@ -23,7 +23,7 @@ import javax.swing.Timer;
 public class FrameMain extends JFrame {
     public FrameMain() {
         super("SpaceInvaders");
-        SpaceInvader.registerFont("src/main/java/Fonts/PixelGameFont.ttf");
+        SpaceInvader.registerFont(FrameMain.class.getResource("Fonts/PixelGameFont.ttf"));
         setLayout(null);
         addKeyListener(pShipMovement);
         // playlist.add(bisbal);
@@ -31,13 +31,14 @@ public class FrameMain extends JFrame {
 
         // playlist.get(contPlayList).play();
 
-        lblBackgroundImage = new JLabel(new ImageIcon("src/main/java/images/galaxy.png"));
+        lblBackgroundImage = new JLabel(new ImageIcon(FrameMain.class.getResource("images/galaxy.png")));
         lblBackgroundImage.setSize(lblBackgroundImage.getPreferredSize());
         lblBackgroundImage.setLocation(0, 0);
         setContentPane(lblBackgroundImage);
 
-        score=readFile("C:/Users/david/AppData/Roaming/spaceinvaders/scoreIngame.txt");
-        highScore=readFile("C:/Users/david/AppData/Roaming/spaceinvaders/highScore");
+        writeFile(0, System.getProperty("user.home")+"/AppData/Roaming/spaceinvaders/scoreIngame.txt");
+        score=readFile(System.getProperty("user.home")+"/AppData/Roaming/spaceinvaders/scoreIngame.txt");
+        highScore=readFile(System.getProperty("user.home")+"/AppData/Roaming/spaceinvaders/highScore.txt");
 
         lblHighScore= new JLabel("HIGHSCORE: "+highScore);
         lblHighScore.setSize(200,30);
@@ -77,7 +78,7 @@ public class FrameMain extends JFrame {
         int xLifeNumber = 30, yLifeNumber = 530;
         for (int i = 0; i < spaceShip.gethp(); i++) {
 
-            lblLifenumber = new JLabel(new ImageIcon("src/main/java/images/nave.png"));
+            lblLifenumber = new JLabel(new ImageIcon(FrameMain.class.getResource("images/nave.png")));
             lblLifenumber.setSize(20, 20);
             lblLifenumber.setLocation(xLifeNumber, yLifeNumber);
             lifeNumber.add(lblLifenumber);
@@ -96,7 +97,7 @@ public class FrameMain extends JFrame {
         fpsBullet = new Timer(17, new BulletMovement());
         fpsSpaceShip = new Timer(17, pShipMovement);
         fpsAlien = new Timer(17, new AlienMovement());
-        fpsSound = new Timer(1000, new PlayList());
+        //fpsSound = new Timer(1000, new PlayList());
 
         setSize(600, 600);
         setLocationRelativeTo(null);
@@ -105,24 +106,24 @@ public class FrameMain extends JFrame {
         setVisible(true);
     }
 
-    private class PlayList implements ActionListener {
+    // private class PlayList implements ActionListener {
 
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            contSeconds += 1000;
-            System.err.println();
-            if (contSeconds >= playlist.get(contPlayList).audioClip.getMicrosecondLength()) {
-                if (contPlayList < playlist.size()) {
+    //     @Override
+    //     public void actionPerformed(ActionEvent e) {
+    //         contSeconds += 1000;
+    //         System.err.println();
+    //         if (contSeconds >= playlist.get(contPlayList).audioClip.getMicrosecondLength()) {
+    //             if (contPlayList < playlist.size()) {
 
-                    playlist.get(contPlayList).stop();
-                    contPlayList++;
-                    playlist.get(contPlayList).play();
-                }
-            }
+    //                 playlist.get(contPlayList).stop();
+    //                 contPlayList++;
+    //                 playlist.get(contPlayList).play();
+    //             }
+    //         }
 
-        }
+    //     }
 
-    }
+    // }
 
     private void writeFile(int score, String path){
         try (PrintWriter f = new PrintWriter(new FileWriter(path))) {
@@ -133,16 +134,17 @@ public class FrameMain extends JFrame {
     }
 
     private int readFile(String path){
+        int points=0;
         try (Scanner sc = new Scanner(new File(path))) {
-            score=Integer.parseInt(sc.nextLine());
+            points=Integer.parseInt(sc.nextLine());
         } catch (FileNotFoundException e) {
-            System.err.println("Error al acceso archivo");
+            System.err.println("no hay archivo");
         }catch(NoSuchElementException e ){
             System.err.println("No hay linea que leer");
         }catch (NumberFormatException e ){
             System.err.println("En el archivo no se puede leeer un entero");
         }
-        return score;
+        return points;
     }
 
     private class SpaceShipMovement extends KeyAdapter implements ActionListener {
@@ -151,7 +153,7 @@ public class FrameMain extends JFrame {
         public void keyPressed(KeyEvent e) {
             fpsBullet.start();
             fpsAlien.start();
-            fpsSound.start();
+            //fpsSound.start();
 
             if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
                 directionX = true;
@@ -278,10 +280,12 @@ public class FrameMain extends JFrame {
                             lifeNumber.remove(spaceShip.gethp());
 
                             if (spaceShip.hp < 1) {
-                                writeFile(0,"C:/Users/david/AppData/Roaming/spaceinvaders/scoreIngame.txt");
-                                //TODO HACER QUE NO CAMBIEN EL HIGHSCOPRE!!!!!g
-                                g
-                                writeFile(score, "C:/Users/david/AppData/Roaming/spaceinvaders/highScore.txt");
+                                writeFile(0,System.getProperty("user.home")+"/AppData/Roaming/spaceinvaders/scoreIngame.txt");
+                                
+                                if(score>readFile(System.getProperty("user.home")+"/AppData/Roaming/spaceinvaders/highScore.txt")){
+                                    writeFile(score, System.getProperty("user.home")+"/AppData/Roaming/spaceinvaders/highScore.txt");
+
+                                }
                                 dispose();
                                 GameOver gameOver = new GameOver(FrameMain.this);
                                 gameOver.setSize(400, 200);
@@ -303,7 +307,7 @@ public class FrameMain extends JFrame {
                     if (i % 2 == 0) {
                         alien.setIcon(null);
                     } else {
-                        alien.setIcon(new ImageIcon("src/main/java/images/alien.png"));
+                        alien.setIcon(new ImageIcon(FrameMain.class.getResource("images/alien.png")));
                     }
                     try {
                         Thread.sleep(100);
@@ -325,7 +329,7 @@ public class FrameMain extends JFrame {
                     if (i % 2 == 0) {
                         spaceShip.setIcon(null);
                     } else {
-                        spaceShip.setIcon(new ImageIcon("src/main/java/images/nave.png"));
+                        spaceShip.setIcon(new ImageIcon(FrameMain.class.getResource("images/nave.png")));
                     }
                     try {
                         Thread.sleep(100);
@@ -452,10 +456,10 @@ public class FrameMain extends JFrame {
     /**
      * Variables para poner musica y un ArrayList para hacer una playlist
      */
-    SClip ellaesMiNena = new SClip("src/main/java/music/Ella es mi nena.wav");
-    SClip bisbal = new SClip("src/main/java/music/bisbal.wav");
-    SClip shootSound = new SClip("src/main/java/music/shoot.wav");
-    SClip explosionSound = new SClip("src/main/java/music/explosion.wav");
-    SClip AlienDeadSound = new SClip("src/main/java/music/invaderkilled.wav");
+    //SClip ellaesMiNena = new SClip(FrameMain.class.getResource("music/Ella es mi nena.wav"));
+    SClip bisbal = new SClip(FrameMain.class.getResource("music/bisbal.wav"));
+    SClip shootSound = new SClip(FrameMain.class.getResource("music/shoot.wav"));
+    SClip explosionSound = new SClip(FrameMain.class.getResource("music/explosion.wav"));
+    SClip AlienDeadSound = new SClip(FrameMain.class.getResource("music/invaderkilled.wav"));
     ArrayList<SClip> playlist = new ArrayList<>();
 }
