@@ -46,19 +46,28 @@ public class SpaceInvader extends JFrame {
         lblTittle2.setFont(new Font("ARCO", Font.ITALIC, 46));
         add(lblTittle2);
 
-        lblPlay = new JLabel("Play Game");
+        lblPlay = new JLabel("Single player");
         lblPlay.setSize(200, 50);
-        lblPlay.setLocation(200, 300);
+        lblPlay.setLocation(200, 250);
         lblPlay.setFont(new Font("ARCO", Font.ITALIC, 24));
         lblPlay.setForeground(Color.white);
         lblPlay.addMouseListener(new MouseHandler());
         add(lblPlay);
+
+        lblOnline = new JLabel("Online");
+        lblOnline.setSize(200, 50);
+        lblOnline.setLocation(200, 300);
+        lblOnline.setFont(new Font("ARCO", Font.ITALIC, 24));
+        lblOnline.setForeground(Color.white);
+        lblOnline.addMouseListener(new MouseHandler());
+        add(lblOnline);
 
         lblHighScore = new JLabel("HighScore");
         lblHighScore.setSize(200, 50);
         lblHighScore.setLocation(200, 350);
         lblHighScore.setFont(new Font("ARCO", Font.ITALIC, 24));
         lblHighScore.setForeground(Color.white);
+        lblHighScore.addMouseListener(new MouseHandler());
         add(lblHighScore);
 
         lblExit = new JLabel("Exit Game");
@@ -80,7 +89,7 @@ public class SpaceInvader extends JFrame {
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         try {
             ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File(url.toURI())));
-            
+
         } catch (FontFormatException e) {
 
             e.printStackTrace();
@@ -88,7 +97,7 @@ public class SpaceInvader extends JFrame {
 
             e.printStackTrace();
         } catch (URISyntaxException e) {
-                
+
             e.printStackTrace();
         }
     }
@@ -97,20 +106,31 @@ public class SpaceInvader extends JFrame {
         @Override
         public void mouseClicked(MouseEvent e) {
             if (e.getSource() == lblPlay) {
-                FrameMain frame = new FrameMain();
-                frame.setSize(600, 600);
-                frame.setLocationRelativeTo(null);
-                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                frame.setVisible(true);
-                dispose();
+                createFrame(true);
             }
-
+            if (e.getSource() == lblOnline) {
+               createFrame(false);
+            }
+            if(lblHighScore==e.getSource()){
+                new Ranking();
+            }
             if (e.getSource() == lblExit) {
                 System.exit(0);
             }
         }
+
+        public void createFrame(boolean flag){
+            FrameMain frame = new FrameMain(flag);
+            frame.setSize(600, 600);
+            frame.setLocationRelativeTo(null);
+
+            frame.setVisible(true);
+            dispose();
+        }
     }
 
-    JLabel lblPlay, lblHighScore, lblExit;
+    JLabel lblPlay, lblOnline, lblHighScore, lblExit;
     JLabel lblTittle, lblTittle2, lblBackgroundImage;
+    static String name="";
+    static int contName=0;
 }

@@ -1,2 +1,1 @@
-Cambiando todas las rutas de archibvos a getResources
-High Score y score arreglado
+HighScore con marcadores y ordenado por puntos, Nueva idea añadida juego online
